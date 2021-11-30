@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}
+To-do-list
+{% endblock %}
+
+{% block body %}
+    <div class="container justify-content-center">
+        <form class="input-group mb-3" action="{% url 'add' %}" method="POST">
+            {{ form.task_name }}
+            {% csrf_token %}
+            <input type="text" name="task_name" class="form-control" placeholder="Add tasks" maxlength="200" required="" id="id_task_name">
+            <button class="btn btn-primary" type="submit">Add</button>
+        </form>
+    </div>
+
+    {% for task in tasks %}
+        {% if task.completed == True %}
+            <div class="container justify-content-center">
+            <div class="completed mx-3 my-3 border border-2 rounded">
+        {% else %}
+            <div class="container justify-content-center">
+            <div class="not-completed mx-3 my-3 border border-2 rounded">
+        {% endif %}
+
+    <div class="row">
+        {% if task.completed == True %}
+            <div class="col-md mx-2 my-2">
+            <h5 class="text-decoration-line-through"><strong>{{ task.task_name }}</strong></h5>
+            <p class="text-secondary text-decoration-line-through">Created at: {{ task.created_at }}</p>
+            {% if task.created_at < task.updated_at %}
+                <p class="text-secondary text-decoration-line-through">Edited at: {{ task.updated_at }}</p>
+            {% endif %}
+        {% else %}
+            <div class="col-md mx-2 my-2">
+            <h5 class=""><strong>{{ task.task_name }}</strong></h5>
+            <p class="">Created at: {{ task.created_at }}</p>
+            {% if task.created_at < task.updated_at %}
+                <p class="">Edited at: {{ task.updated_at }}</p>
+            {% endif %}
+        {% endif %}
+        </div>
+        <div class="col-md text-md-end mx-1 my-2">
+            {% if task.completed == False %}
+                <a class="btn btn-success" href ="{% url 'complete_task' task.id %}">Completed</a>
+            {% endif %}
+            <a href="{% url 'update' task.id %}" class="btn btn-primary">Update</a>
+            <a href="{% url 'delete' task.id %}" class="btn btn-danger">Delete</a>
+        </div>
+        </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    </div>
+    {% endfor %}
+{% endblock %}

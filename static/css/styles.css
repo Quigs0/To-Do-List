@@ -1,0 +1,9 @@
+body{
+    background-color: #fafafa;
+}
+.completed{
+    background-color: gray;
+}
+.not-completed{
+    background-color: white;
+}
